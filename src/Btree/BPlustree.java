@@ -1,20 +1,24 @@
 public class BPlustree {
     private BtreeNode root;
-    private int order;
+    private final int order;
 
     public BPlustree(int order)
     {
         this.order = order;
         this.root = null;
     }
-    public BtreeNode BPlustreeSearchKey(int val,BtreeNode root)
+    public void setRoot(BtreeNode root) {
+        this.root = root;
+    }
+
+    //Recursive Search
+    public BtreeNode BPlusTreeSearchKey(int val,BtreeNode root)
     {
         int index=0;
         while(index<root.numKeys && val>root.keys[index])
         {
             index++;
         }
-
         if(root.isLeaf)
         {
             if(index< root.numKeys && val==root.keys[index])
@@ -22,7 +26,7 @@ public class BPlustree {
 
             return null;
         }
-        return BPlustreeSearchKey(val,root.children[index]);
+        return BPlusTreeSearchKey(val,root.children[index]);
     }
     public BtreeNode BTreeSearch(int val)
     {
@@ -32,50 +36,57 @@ public class BPlustree {
         }
         else
         {
-            return BPlustreeSearchKey(val,root);
+            return BPlusTreeSearchKey(val,root);
         }
     }
 
-    //changes to be made below....
-    public void BPlustreeInsert(int val)
+
+    public void BPlusTreeInsert(int val)
     {
-        if (this.root == null)
+        if(this.root==null)
         {
-            this.root = new BtreeNode(this.order, true);
-            this.root.keys[0] = val;
-            this.root.numKeys = 1;
+            this.root = new BtreeNode(this.order,true);
+            BTreeNodeHelper.insertIntoLeaf(this.root,val,val);
+            return;
+        }
+        BtreeNode leaf = findByLeaf(val);
+
+        BTreeNodeHelper.insertIntoLeaf(leaf,val,val);
+
+        if (leaf.numKeys >= this.order)
+        {
+            BTreeNodeHelper.split(leaf, this);
         }
 
     }
-    private void splitChild(BtreeNode parent,int index)
+    private BtreeNode findByLeaf(int val)
     {
-        BtreeNode NodeToSplit=parent.children[index];
-        BtreeNode newNode=new BtreeNode(NodeToSplit.order,NodeToSplit.isLeaf);
-        newNode.numKeys=this.order/2 -1;
+        if(this.root==null)return null;
+        BtreeNode curr = this.root;
 
-        for(int j=0;j<this.order/2 -1;j++)
+        while(!curr.isLeaf)
         {
-            newNode.keys[j]=NodeToSplit.keys[j+this.order/2];
-        }
-        if(!NodeToSplit.isLeaf)
-        {
-            for(int j=0;j<this.order/2;j++)
+            int i = 0;
+            while(i<curr.numKeys && val>= curr.keys[i])
             {
-                newNode.children[j]=NodeToSplit.children[j+this.order/2];
+                i++;
             }
+            curr = curr.children[i];
         }
-        NodeToSplit.numKeys=this.order/2 -1;
-        for(int j=parent.numKeys;j>=index+1;j--) {
-            parent.children[j + 1] = parent.children[j];
+        return curr;
+    }
+    public void traverse() {
+        if (root == null) return;
+        BtreeNode currentNode = root;
+        while(!currentNode.isLeaf){
+            currentNode = currentNode.children[0];
         }
-        parent.children[index+1]=newNode;
-        for(int j=parent.numKeys-1;j>=index;j--)
-        {
-            parent.keys[j+1]=parent.keys[j];
+        while (currentNode != null) {
+            for (int i = 0; i < currentNode.numKeys; i++) {
+                System.out.print(currentNode.keys[i] + " ");
+            }
+            currentNode = currentNode.nextNode;
         }
-        parent.keys[index]=NodeToSplit.keys[this.order/2 -1];
-        parent.numKeys++;
-        // System.out.println("Spliting node "+NodeToSplit.keys[this.maxDegree/2 -1]);
-
+        System.out.println();
     }
 }

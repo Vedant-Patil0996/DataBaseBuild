@@ -7,17 +7,17 @@ public class BtreeNode {
     BtreeNode nextNode; // Pointer to the next leaf node in the linked list
     long[] dataPointer;// Array to store pointers to actual data rows (only used in leaf nodes)
     BtreeNode parent;
-    public BtreeNode(int maxDegree, boolean isLeaf) {
-        this.order = maxDegree;//number of children for each node
+    public BtreeNode(int order, boolean isLeaf) {
+        this.order = order;//number of children for each node
         this.isLeaf = isLeaf;//to check whether the node is a leaf node or not
-        this.keys = new int[maxDegree -1];
-        this.children = new BtreeNode[maxDegree];
+        this.keys = new int[order];
+        this.children = new BtreeNode[order+1];
         this.numKeys = 0;
         this.nextNode = null;
         this.parent = null;
         if(isLeaf)
         {
-            this.dataPointer = new long[order - 1];
+            this.dataPointer = new long[order];
         }
         else {
             this.dataPointer = null;
