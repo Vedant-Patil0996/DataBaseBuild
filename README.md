@@ -11,5 +11,5 @@ next step=> saving to disk
 
 ----Week 2---\
 day-1\
-Pager implementation with optimization of checklist
+Pager implementation with optimization of checklist\
 ig i will improve file struc later
