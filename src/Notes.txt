@@ -1,1 +1,8 @@
-hellowow
+week-2-day-1
+created the pager system for tackling the durability part so that data doesnt vanish after java program is
+closed or stopped. for now only single file implementation
+->used page_size and offset concepts
+->problems faced
+1.in deletion as it would leave huge gaps in file
+=>system is incredibly slow if we manually shift, so maybe dynamic allocation type smtg would work
+sol: checklist concept(optimization)(I GOT CONFUSED MORE AHHHH )
