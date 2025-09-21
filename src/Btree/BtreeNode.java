@@ -1,12 +1,13 @@
+package Btree;
 public class BtreeNode {
-    int[] keys;
-    BtreeNode[] children;
-    int order;
-    boolean isLeaf;
-    int numKeys;
-    BtreeNode nextNode; // Pointer to the next leaf node in the linked list
-    long[] dataPointer;// Array to store pointers to actual data rows (only used in leaf nodes)
-    BtreeNode parent;
+    public int[] keys;
+    public BtreeNode[] children;
+    public int order;
+    public boolean isLeaf;
+    public int numKeys;
+    public BtreeNode nextNode; // Pointer to the next leaf node in the linked list
+    public long[] dataPointer;// Array to store pointers to actual data rows (only used in leaf nodes)
+    public BtreeNode parent;
     public BtreeNode(int order, boolean isLeaf) {
         this.order = order;//number of children for each node
         this.isLeaf = isLeaf;//to check whether the node is a leaf node or not

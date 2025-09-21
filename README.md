@@ -13,3 +13,7 @@ next step=> saving to disk
 day-1\
 Pager implementation with optimization of checklist
 ig i will improve file struc later
+
+---Week 3---\
+day-1\
+Serialization and deserialization of leaf nodes\
