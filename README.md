@@ -17,3 +17,4 @@ ig i will improve file struc later
 ---Week 3---\
 day-1\
 Serialization and deserialization of leaf nodes\
+<img width="900" height="600" alt="image" src="https://github.com/user-attachments/assets/dd612daf-112d-4120-8f90-cacaad41f484" />
