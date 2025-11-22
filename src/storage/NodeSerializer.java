@@ -38,7 +38,7 @@ public class NodeSerializer {
         boolean isLeaf = buffer.getInt() == 1;
         int numKeys = buffer.getInt();
 
-        BtreeNode node = new BtreeNode(order, isLeaf);
+        BtreeNode node = new BtreeNode(order, isLeaf );
         node.numKeys = numKeys;
 
         if(isLeaf)

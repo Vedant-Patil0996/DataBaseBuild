@@ -27,7 +27,7 @@ public class Pager {
 
         file.seek(offset);
 
-        file.readFully(pageData);
+        file.readFully(pageData);//synchorinized wont stopped until all data bytes in that place is fully read
 
         return pageData;
     }
