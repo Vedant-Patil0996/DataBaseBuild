@@ -26,3 +26,11 @@ into a structured byte[] array that the Pager can write to a single page in the 
 "translation for storage" part.
 -> Deserialization is the process of taking a byte[] array (that the Pager just read from the file) and
 using it to reconstruct a single, live BTreeNode object back in the computer's memory
+
+<------------------------------------------------------------------------------------------------------>
+crazyy gap for month or 2 ig :(
+buffer manager integrated ai helped a lot for fixing :_).... worked a bit more node serializer i think more thought to
+be put on it
+->Checked serializaer and deserializer working
+->check whole working
+->next work on data insertion...
