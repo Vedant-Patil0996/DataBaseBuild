@@ -51,10 +51,10 @@ public class Pager {
         return checkList.getNextFreePage();
     }
 
-    public long allocateNewPage()
-    {
+    public long allocateNewPage() throws IOException {
         long newPageId = pageCount;
         pageCount++;
+        file.setLength(pageCount * SIZE);
         return newPageId;
     }
 

@@ -48,8 +48,7 @@ public class CheckList {
     {
         freePages.add(Id);
     }
-    public long getNextFreePage()
-    {
+    public long getNextFreePage() throws IOException {
         if(!freePages.isEmpty())
         {
             return freePages.removeLast();

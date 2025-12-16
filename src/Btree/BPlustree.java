@@ -17,6 +17,11 @@ public class BPlustree {
         if(pg.getPageCount()==0)
         {
             System.out.println("Creating new database file");
+            // 1. Create Page 0 (Reserved for Header/Metadata)
+            bf.createPage(false, order);
+
+            // 2. Create Page 1 (Reserved for CheckList/FreeList)
+            bf.createPage(false, order);
             this.root=bf.createPage(true,order);
             this.rootPageId = this.root.pageId;
         }
@@ -44,17 +49,19 @@ public class BPlustree {
         }
         return null;
     }
-    public void BPlusTreeInsert(int val) throws Exception
-    {
-        BtreeNode leaf = findByLeaf(val);
+    public void BPlusTreeInsert(int key, long recordPointer) throws Exception {
 
-        BTreeNodeHelper.insertIntoLeaf(leaf,val,val,bf);//inserting at the location
+        // 1. Find the correct leaf node
+        BtreeNode leaf = findByLeaf(key);
 
-        if (leaf.numKeys >= this.order)
-        {
-            BTreeNodeHelper.split(leaf, this,bf);//if order size is exceeded split it
+        // 2. Insert the Key AND the Pointer
+        // Your Helper already supports this! We just needed to pass the right variables.
+        BTreeNodeHelper.insertIntoLeaf(leaf, key, recordPointer, bf);
+
+        // 3. Handle splits if necessary
+        if (leaf.numKeys >= this.order) {
+            BTreeNodeHelper.split(leaf, this, bf);
         }
-
     }
     private BtreeNode findByLeaf(int val) throws IOException
     {
@@ -95,6 +102,9 @@ public class BPlustree {
 
         }
         System.out.println();
+    }
+    public Pager getPager() {
+        return this.pg;
     }
     public void close() throws IOException {
         bf.saveAll();
