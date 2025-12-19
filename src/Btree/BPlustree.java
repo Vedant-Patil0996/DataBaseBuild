@@ -2,6 +2,7 @@ package Btree;
 import storage.*;
 
 import java.io.IOException;
+import java.util.List;
 
 public class BPlustree {
     private BtreeNode root;
@@ -17,10 +18,10 @@ public class BPlustree {
         if(pg.getPageCount()==0)
         {
             System.out.println("Creating new database file");
-            // 1. Create Page 0 (Reserved for Header/Metadata)
+            // 1.Page 0 (Reserved for Header/Metadata)
             bf.createPage(false, order);
 
-            // 2. Create Page 1 (Reserved for CheckList/FreeList)
+            // 2. Page 1 (Reserved for CheckList/FreeList)
             bf.createPage(false, order);
             this.root=bf.createPage(true,order);
             this.rootPageId = this.root.pageId;
@@ -55,7 +56,6 @@ public class BPlustree {
         BtreeNode leaf = findByLeaf(key);
 
         // 2. Insert the Key AND the Pointer
-        // Your Helper already supports this! We just needed to pass the right variables.
         BTreeNodeHelper.insertIntoLeaf(leaf, key, recordPointer, bf);
 
         // 3. Handle splits if necessary
@@ -80,7 +80,7 @@ public class BPlustree {
         }
         return curr;
     }
-    public void traverse() throws IOException {
+    public void traverse(List<Long> li) throws IOException {
         if (root == null) return;
         BtreeNode currentNode = root;
         while(!currentNode.isLeaf){
@@ -89,7 +89,8 @@ public class BPlustree {
         }
         while (currentNode != null) {
             for (int i = 0; i < currentNode.numKeys; i++) {
-                System.out.print(currentNode.keys[i] + " ");
+                //System.out.print(currentNode.keys[i] + " ");
+                li.add(currentNode.dataPointer[i]);
             }
             if(currentNode.nextNodeId!=-1)
             {
@@ -101,7 +102,7 @@ public class BPlustree {
             }
 
         }
-        System.out.println();
+        //System.out.println();
     }
     public Pager getPager() {
         return this.pg;

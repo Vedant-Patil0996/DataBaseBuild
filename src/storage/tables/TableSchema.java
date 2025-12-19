@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TableSchema {
-    public int rows;
+    public int rows = 1;
     public List<Columns> cols = new ArrayList<>();
 
     public void addCols(String name,String type,int size)

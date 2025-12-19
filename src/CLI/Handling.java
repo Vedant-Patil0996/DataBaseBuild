@@ -7,6 +7,8 @@ import storage.tables.Row;
 import storage.tables.TableSchema;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class Handling {
 
@@ -67,5 +69,58 @@ public class Handling {
 
         System.out.println("Found Row: " + result.toString());
 
+    }
+    public static void optionSelectAll(String s1,Table table,BPlustree btree, TableSchema schema) throws Exception
+    {
+        String[] parts = s1.split(" ");
+        if(parts.length!=1)
+        {
+            System.out.println("Incorrect Syntax");
+            return;
+        }
+        List<Long> list = new ArrayList<>();
+        btree.traverse(list);
+        for(int i=0;i<list.size();i++)
+        {
+            Row res = table.readRow(list.get(i));
+            if(res==null)
+            {
+                continue;
+            }
+            System.out.println(res.toString());
+        }
+    }
+
+    public static void optionDeleteByID(String s1,Table table,BPlustree btree, TableSchema schema) throws Exception
+    {
+        String[] parts = s1.split(" ");
+        if(parts.length!=2)
+        {
+            System.out.println("Incorrect Syntax");
+            return;
+        }
+        int id = Integer.parseInt(parts[1]);
+        BtreeNode b1 = btree.BPlusTreeSearch(id);
+        if(b1 == null)
+        {
+            System.out.println("Entry not found");
+        }
+        long pointer = -1;
+        boolean found = false;
+
+        for (int i = 0; i < b1.numKeys; i++) {
+            if (b1.keys[i] == id) {
+                pointer = b1.dataPointer[i];
+                found = true;
+                break;
+            }
+        }
+
+        if (!found) {
+            System.out.println("ID " + id + " not found.");
+            return;
+        }
+
+        table.deleteRow(pointer);
     }
 }

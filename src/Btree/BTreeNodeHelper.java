@@ -104,9 +104,7 @@ public class BTreeNodeHelper {
 
     private static void promoteKey(BtreeNode nodeToSplit, int keyToPromote, BtreeNode sibling, BPlustree tree, BufferManager bf) throws Exception {
 
-        // We check the Page ID, not the object reference, to see if it's the root
         if (nodeToSplit.parentId == -1) {
-            // This node IS the root. We must create a NEW root.
             BtreeNode newRoot = bf.createPage(false, nodeToSplit.order);
 
             newRoot.numKeys = 1;

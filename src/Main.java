@@ -27,9 +27,11 @@ public class Main {
             System.out.println("Commands:");
             System.out.println("  > insert <id> <name> <email>");
             System.out.println("  > select <id>");
+            System.out.println("  > selectall");
+            System.out.println("  > delete <id>");
             while(true)
             {
-                System.out.print("db >");
+                System.out.print("TARSdb >");
                 String s1 = sc.nextLine().trim();
                 if(s1.equals("exit"))
                 {
@@ -44,9 +46,16 @@ public class Main {
                     {
                         Handling.optionInsert(s1,table,bPlustree);
                     }
+                    else if(s1.startsWith("selectall")){
+                        Handling.optionSelectAll(s1,table,bPlustree,schema);
+                    }
                     else if(s1.startsWith("select"))
                     {
                         Handling.optionSelect(s1,table,bPlustree,schema);
+                    }
+                    else if(s1.startsWith("delete"))
+                    {
+                        Handling.optionDeleteByID(s1,table,bPlustree,schema);
                     }
                     else
                     {

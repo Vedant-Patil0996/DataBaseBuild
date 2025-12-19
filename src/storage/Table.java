@@ -35,7 +35,6 @@ public class Table {
         }
         pager.writePage(currentPageID, pageData);
 
-        // Create Pointer: (PageID << 16) | Offset
         long pointer = (currentPageID << 16) | currentOffset;
 
         currentOffset += data.length;
@@ -44,9 +43,13 @@ public class Table {
     public Row readRow(long pointer) throws IOException {
         long pageId = pointer >> 16;
         int offset = (int) (pointer & (1<<16)-1);
-
+        // System.out.println("{DEBUG} -> Reading RowPointer: " + pointer);
+        // System.out.println("{DEBUG} -> Unpacked PageID: " + pageId);
+        // System.out.println("{DEBUG} -> Unpacked Offset : " + offset);
         byte[] pageData = pager.readPage(pageId);
-
+        if (pageData[offset] == 1) {
+            return null;
+        }
         byte[] rowData = new byte[schema.rows];
         for (int i = 0; i < schema.rows; i++) {
             rowData[i] = pageData[offset + i];
@@ -54,6 +57,15 @@ public class Table {
 
         return RowSerializer.deserializeRow(rowData, schema);
     }
+    public void deleteRow(long pointer) throws IOException
+    {
+        long pageId = pointer >> 16;
+        int offset = (int) (pointer & (1<<16)-1);
 
+        byte[] pageData = pager.readPage(pageId);
+        pageData[offset] = (byte) 1;
+
+        pager.writePage(pageId, pageData);
+    }
 
 }

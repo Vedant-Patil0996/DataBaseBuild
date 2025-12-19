@@ -1,0 +1,6 @@
+![img.png](img.png)
+1>lol one byte change or something i did...
+
+2> EOFF error
+
+3>two same index deletion not happening...

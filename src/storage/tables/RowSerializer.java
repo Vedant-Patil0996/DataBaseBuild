@@ -9,7 +9,9 @@ public class RowSerializer {
 
     public static byte[] serializeRow(Row row, TableSchema schema)
     {
+
         ByteBuffer buff = ByteBuffer.allocate(schema.rows);
+        buff.put((byte) 0);
         for(int i=0;i<schema.cols.size();i++) {
             Columns cols = schema.cols.get(i);
             Object val = row.values.get(i);
@@ -35,7 +37,10 @@ public class RowSerializer {
     {
         ByteBuffer buff = ByteBuffer.wrap(bytes);
         Row rows = new Row();
-
+        if(buff.get()==1)
+        {
+            return null;
+        }
         for(Columns cols: schema.cols)
         {
             if(cols.type.equals("INT"))
