@@ -14,4 +14,9 @@ public class Row {
     public String toString() {
         return values.toString();
     }
+
+    public int size()
+    {
+        return values.size();
+    }
 }

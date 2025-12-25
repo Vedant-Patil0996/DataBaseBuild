@@ -80,6 +80,7 @@ public class Handling {
         }
         List<Long> list = new ArrayList<>();
         btree.traverse(list);
+        List<Row> s2 = new ArrayList<>();
         for(int i=0;i<list.size();i++)
         {
             Row res = table.readRow(list.get(i));
@@ -87,8 +88,9 @@ public class Handling {
             {
                 continue;
             }
-            System.out.println(res.toString());
+            s2.add(res);
         }
+        Utils.TableFormat.createTable(s2);
     }
 
     public static void optionDeleteByID(String s1,Table table,BPlustree btree, TableSchema schema) throws Exception
