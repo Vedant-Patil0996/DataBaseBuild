@@ -3,6 +3,7 @@ import storage.*;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Stack;
 
 public class BPlustree {
     private BtreeNode root;
@@ -19,22 +20,23 @@ public class BPlustree {
         {
             System.out.println("Creating new database file");
             // 1.Page 0 (Reserved for Header/Metadata)
-            bf.createPage(false, order);
-
-            // 2. Page 1 (Reserved for CheckList/FreeList)
-            bf.createPage(false, order);
+            pg.allocateNewPage(); // Page 0 reserved
+            pg.allocateNewPage();
             this.root=bf.createPage(true,order);
             this.rootPageId = this.root.pageId;
+
+            saveRootPageId(this.rootPageId);
         }
         else
         {
-            this.rootPageId = 2;
-            this.root = bf.fetchPage(this.rootPageId,this.order);
+            this.rootPageId = loadRootPageId();
+            this.root = bf.fetchPage(this.rootPageId, this.order);
         }
     }
-    public void setRoot(BtreeNode root) {
+    public void setRoot(BtreeNode root) throws IOException {
         this.root = root;
         this.rootPageId = root.pageId;
+        saveRootPageId(this.rootPageId);
     }
 
     //Recursive Search
@@ -110,5 +112,68 @@ public class BPlustree {
     public void close() throws IOException {
         bf.saveAll();
         pg.close();
+    }
+
+    public static void btreeVisualizer(BPlustree tree) throws IOException
+    {
+        if(tree.root==null)
+        {
+            System.out.println("Tree is empty");
+            return;
+        }
+
+        BtreeNode start = tree.root;
+        System.out.print("(ROOT)");
+        System.out.print("-(KEYS)=>");
+        for(int i=0;i< start.numKeys;i++)
+        {
+            System.out.print(start.keys[i]+", ");
+        }
+        if (start.isLeaf) {
+            System.out.println(" [Leaf Node - No Children]");
+            return; // or continue if inside a loop
+        }
+        System.out.print(" -(CHILDREN)=>");
+        int len = start.childrenId.length;
+        Stack<BtreeNode> st = new Stack<>();
+        for(int i = start.numKeys; i >= 0; i--)
+        {
+            long val = start.childrenId[i];
+            System.out.print(val+", ");
+            st.push(tree.bf.fetchPage(val,tree.order));
+        }
+        System.out.println();
+        while(!st.isEmpty())
+        {
+            BtreeNode b1 = st.pop();
+            len = b1.keys.length;
+            System.out.print("(NODE)");
+            System.out.print("-(KEYS)=>");
+            for(int i=0;i<b1.numKeys;i++)
+            {
+                System.out.print(b1.keys[i]+", ");
+            }
+            if(b1.isLeaf)
+            {
+                continue;
+            }
+            System.out.print(" -(CHILDREN)=>");
+            len = b1.childrenId.length;
+            for(int i = b1.numKeys; i >= 0; i--)
+            {
+                long val = b1.childrenId[i];
+                System.out.print(val+", ");
+                st.push(tree.bf.fetchPage(val,tree.order));
+            }
+            System.out.println();
+        }
+
+    }
+    private void saveRootPageId(long pageId) throws IOException {
+        pg.writeLong(0, pageId);
+    }
+
+    private long loadRootPageId() throws IOException {
+        return pg.readLong(0);
     }
 }

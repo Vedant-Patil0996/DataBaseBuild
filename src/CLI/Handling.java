@@ -2,6 +2,7 @@ package CLI;
 
 import Btree.BPlustree;
 import Btree.BtreeNode;
+import Utils.CLIStyle;
 import storage.Table;
 import storage.tables.Row;
 import storage.tables.TableSchema;
@@ -42,12 +43,21 @@ public class Handling {
             System.out.println("Incorrect Syntax");
             return;
         }
-        int id = Integer.parseInt(parts[1]);
+        int id;
+        try{
+             id = Integer.parseInt(parts[1]);
+        }catch(NumberFormatException e)
+        {
+            System.out.println("Incorrect Syntax");
+            return;
+        }
+
 
         BtreeNode b1 = btree.BPlusTreeSearch(id);
         if(b1 == null)
         {
             System.out.println("Entry not found");
+            return;
         }
         long pointer = -1;
         boolean found = false;
@@ -66,7 +76,11 @@ public class Handling {
         }
 
         Row result = table.readRow(pointer);
-
+        if(result==null)
+        {
+            System.out.println("Row deleted...");
+            return;
+        }
         System.out.println("Found Row: " + result.toString());
 
     }
@@ -98,14 +112,22 @@ public class Handling {
         String[] parts = s1.split(" ");
         if(parts.length!=2)
         {
+            System.out.println(CLIStyle.RED+"Incorrect Syntax"+CLIStyle.RESET);
+            return;
+        }
+        int id;
+        try{
+            id = Integer.parseInt(parts[1]);
+        }catch(NumberFormatException e)
+        {
             System.out.println("Incorrect Syntax");
             return;
         }
-        int id = Integer.parseInt(parts[1]);
         BtreeNode b1 = btree.BPlusTreeSearch(id);
         if(b1 == null)
         {
             System.out.println("Entry not found");
+            return;
         }
         long pointer = -1;
         boolean found = false;
@@ -124,5 +146,9 @@ public class Handling {
         }
 
         table.deleteRow(pointer);
+    }
+
+    public static void optionTreeVisual(BPlustree btree) throws IOException {
+        BPlustree.btreeVisualizer(btree);
     }
 }

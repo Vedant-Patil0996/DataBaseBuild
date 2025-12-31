@@ -1,5 +1,6 @@
 import Btree.BPlustree;
 import CLI.Handling;
+import Utils.Art;
 import Utils.CLIStyle;
 import Utils.Sleep;
 import storage.Table;
@@ -13,12 +14,17 @@ import static Utils.CLIStyle.typeWriter;
 public class Main {
     public static void main(String[] args)
     {
-        typeWriter(CLIStyle.CYAN + "Welcome to VedantDB v1.1..." + CLIStyle.RESET, 50);
+        /*typeWriter(CLIStyle.CYAN + """
+                Welcome User!!
+                You are currently experiencing under development...
+                """ + CLIStyle.RESET, 100);
+        System.out.println(CLIStyle.CYAN+Art.logo()+"\n"+Art.art()+CLIStyle.YELLOW);*/
+        System.out.println("Initializing db..."+CLIStyle.RESET);
         Sleep.Sleep(3000);
-        System.out.println("Initializing db...");
-
         String userHome = System.getProperty("user.home");
+
         String dbFile = userHome + File.separator + "vedant_db.db";
+        File dbFileObj = new File(dbFile);
         try
         {
             TableSchema schema = new TableSchema();
@@ -27,7 +33,9 @@ public class Main {
             schema.addCols("email" , "VARCHAR",256);
 
             //System.out.println("Schema Defined: "+ schema.rows + " bytes.");
-
+            //System.out.println("Db path: " + dbFileObj.getAbsolutePath());
+            //System.out.println("FILE EXISTS? " + dbFileObj.exists());
+            System.out.println("FILE SIZE: " + dbFileObj.length());
             BPlustree bPlustree = new BPlustree(4,dbFile);
 
             Table table = new Table(bPlustree.getPager(),schema);
@@ -41,14 +49,16 @@ public class Main {
             System.out.println("  > selectall");
             System.out.println("  > delete <id>");
             System.out.println("  > update <id>");
+            System.out.println("  > Treevisual");
             while(true)
             {
+                System.out.println("FILE SIZE: " + dbFileObj.length());
                 System.out.print("TARSdb >");
                 String s1 = sc.nextLine().trim();
                 if(s1.equals("exit"))
                 {
                     bPlustree.close();
-                    System.out.println(CLIStyle.CYAN+"Saving...");
+                    System.out.println(CLIStyle.YELLOW+"Saving...");
                      Sleep.Sleep(2000);
                     System.out.println("Database closed successfully"+CLIStyle.RESET);
                     break;
@@ -74,6 +84,10 @@ public class Main {
                     else if(s1.startsWith("update"))
                     {
                         System.out.println("Operation under development...sorry cutie");
+                    }
+                    else if(s1.startsWith("Tree visual"))
+                    {
+                        Handling.optionTreeVisual(bPlustree);
                     }
                     else
                     {

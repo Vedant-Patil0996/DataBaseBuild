@@ -72,4 +72,12 @@ public class Pager {
         checkList.saveList();
         file.close();
     }
+    public void writeLong(long fileOffset, long value) throws IOException {
+        file.seek(fileOffset);
+        file.writeLong(value);
+    }
+    public long readLong(long fileOffset) throws IOException {
+        file.seek(fileOffset);
+        return file.readLong();
+    }
 }

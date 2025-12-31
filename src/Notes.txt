@@ -46,3 +46,8 @@ Good progress in last couple of weeks...
 implemented delete using 1/0 start byte analysis
 reformatted the selectall table visual to look more like table
 implemented colour and design cli too make it look like more fun...
+<--------------------------------------------------------------------------------------------------------->
+<--------------------------------------------------------------------------------------------------------->
+Happy New Year!!! ;) [1-1-26]
+worked on visualizer can see the internal node structure with Tree visual command....fixed the b+ tree root finder
+on rerun as it was hardcoded to page=2 and if parent promoted or changes havnt it ccreated issuee..
