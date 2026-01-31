@@ -51,3 +51,7 @@ implemented colour and design cli too make it look like more fun...
 Happy New Year!!! ;) [1-1-26]
 worked on visualizer can see the internal node structure with Tree visual command....fixed the b+ tree root finder
 on rerun as it was hardcoded to page=2 and if parent promoted or changes havnt it ccreated issuee..
+<--------------------------------------------------------------------------------------------------------->
+stresstest(fancy name for multiple dummy insertions) and bytecode visualizer partially completed actual data
+representation left....added the page type (int value) at start to identity what that page contains..i still feel
+some byte representation and read has problem but will work on that... next making it dynamic schema :)

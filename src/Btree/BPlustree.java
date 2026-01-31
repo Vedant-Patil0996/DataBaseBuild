@@ -155,6 +155,7 @@ public class BPlustree {
             }
             if(b1.isLeaf)
             {
+                System.out.println();
                 continue;
             }
             System.out.print(" -(CHILDREN)=>");

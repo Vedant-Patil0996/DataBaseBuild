@@ -149,6 +149,66 @@ public class Handling {
     }
 
     public static void optionTreeVisual(BPlustree btree) throws IOException {
-        BPlustree.btreeVisualizer(btree);
+        Btree.BPlustree.btreeVisualizer(btree);
     }
+
+    public static void optionStressTest(String s1,Table table,BPlustree btree, TableSchema schema) throws Exception
+    {
+        String[] parts = s1.split(" ");
+        if(parts.length!=3 && parts.length!=2)
+        {
+            System.out.println("Invalid syntax");
+            return;
+        }
+
+        int value = Integer.parseInt(parts[1]);
+        int index;
+        if(parts.length==3)
+            index = Integer.parseInt(parts[2]);
+        else
+            index = 50;
+        String str1 = "stress";
+        String str2 = "@example.com";
+
+        while(value--!=0)
+        {
+            Row r1 = new Row();
+            r1.addValue(index);
+            r1.addValue(str1+index);
+            r1.addValue(str1+index+str2);
+
+            long placer = table.insertRow(r1);
+
+            btree.BPlusTreeInsert(index,placer);
+            index++;
+        }
+        if(value==0)
+        {
+            System.out.println("StressTest successful");
+        }
+    }
+
+    public static void optionByteView(String s1,Table table,BPlustree btree, TableSchema schema) throws Exception
+    {
+        String[] parts = s1.split(" ");
+        if(parts.length==2)
+        {
+
+        }
+        else if(parts.length==3)
+        {
+            Utils.ByteVisual.viewPage(btree.getPager(),Integer.parseInt(parts[2]));
+        }
+        else
+        {
+            System.out.println("Invalid Syntax");
+            return;
+        }
+    }
+
+    private void byteView(int index,Table table,BPlustree btree, TableSchema schema) throws Exception
+    {
+
+    }
+
 }

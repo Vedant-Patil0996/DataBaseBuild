@@ -10,7 +10,7 @@ public class RowSerializer {
     public static byte[] serializeRow(Row row, TableSchema schema)
     {
 
-        ByteBuffer buff = ByteBuffer.allocate(schema.rows);
+        ByteBuffer buff = ByteBuffer.allocate(schema.rows+1);
         buff.put((byte) 0);
         for(int i=0;i<schema.cols.size();i++) {
             Columns cols = schema.cols.get(i);

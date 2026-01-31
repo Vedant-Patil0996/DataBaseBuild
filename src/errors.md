@@ -17,3 +17,7 @@ File Access / Stream Issues: Errors related to opening the .db file, specificall
 another process or if the pointer logic was off.
 (changed the method from the creatpage to directly allocating as it get marked dirty and overwrites the 0header metadata
 for root)
+
+[31-1-26]
+noting much explicit just implementation failures
+![img_2.png](img_2.png)

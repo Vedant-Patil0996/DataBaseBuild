@@ -50,6 +50,8 @@ public class Main {
             System.out.println("  > delete <id>");
             System.out.println("  > update <id>");
             System.out.println("  > Treevisual");
+            System.out.println("  > stresstest <value> ?<index>");
+            System.out.println("  > bytecode view ?<index>");
             while(true)
             {
                 System.out.println("FILE SIZE: " + dbFileObj.length());
@@ -88,6 +90,14 @@ public class Main {
                     else if(s1.startsWith("Tree visual"))
                     {
                         Handling.optionTreeVisual(bPlustree);
+                    }
+                    else if(s1.startsWith("bytecode"))
+                    {
+                        Handling.optionByteView(s1,table,bPlustree,schema);
+                    }
+                    else if(s1.startsWith("stresstest"))
+                    {
+                        Handling.optionStressTest(s1,table,bPlustree,schema);
                     }
                     else
                     {

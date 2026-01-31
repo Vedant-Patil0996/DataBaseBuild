@@ -10,6 +10,7 @@ public class NodeSerializer {
         int keys = node.numKeys;
 
         ByteBuffer buffer = ByteBuffer.allocate(Pager.SIZE);
+        buffer.putInt(1); // page type
         buffer.putInt(isLeaf);
         buffer.putInt(keys);
         buffer.putLong(node.parentId);
@@ -61,7 +62,7 @@ public class NodeSerializer {
     public static BtreeNode deserialize(byte[] data,int order)
     {
         ByteBuffer buffer = ByteBuffer.wrap(data);
-
+        int dumm = buffer.getInt();
         boolean isLeaf = buffer.getInt() == 1;
         int numKeys = buffer.getInt();
         long parentNodeId = buffer.getLong();

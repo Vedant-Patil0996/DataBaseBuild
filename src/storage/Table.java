@@ -5,6 +5,7 @@ import storage.tables.RowSerializer;
 import storage.tables.TableSchema;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 
 public class Table {
     private Pager pager;
@@ -23,13 +24,29 @@ public class Table {
 
     public long insertRow(Row row) throws IOException
     {
+        int page_header = 16;
+        boolean newPage = false;
+        ByteBuffer header = null;
         byte[] data = RowSerializer.serializeRow(row,schema);
         if (currentPageID == -1 || currentOffset + data.length > Pager.SIZE) {
             currentPageID = pager.allocateNewPage();
-            currentOffset = 0;
+
+            header = ByteBuffer.allocate(page_header);
+            header.putInt(2);
+            header.putInt(0); // Reserved / Row Count (Optional)
+            header.putLong(0L); // Reserved
+            newPage =true;
+
+            currentOffset = page_header;
         }
 
         byte[] pageData = pager.readPage(currentPageID);
+        if (newPage) {
+            byte[] headerBytes = header.array();
+            for(int i=0; i<page_header; i++) {
+                pageData[i] = headerBytes[i];
+            }
+        }
         for (int i = 0; i < data.length; i++) {
             pageData[currentOffset + i] = data[i];
         }
@@ -50,7 +67,7 @@ public class Table {
         if (pageData[offset] == 1) {
             return null;
         }
-        byte[] rowData = new byte[schema.rows];
+        byte[] rowData = new byte[schema.rows+1];
         for (int i = 0; i < schema.rows; i++) {
             rowData[i] = pageData[offset + i];
         }
